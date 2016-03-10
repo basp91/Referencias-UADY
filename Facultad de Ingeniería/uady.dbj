@@ -49,8 +49,8 @@ End of customized bst file
 %>>HTML OUTPUT (if non author-year citations)
 %<<AUTHOR--YEAR SUPPORT SYSTEM (if author-year citations)
 % nat,%: Natbib for use with natbib v5.3 or later
-%   %: (def) Older Natbib without full authors citations
-  alk,%: Apalike for use with apalike.sty
+    %: (def) Older Natbib without full authors citations
+% alk,%: Apalike for use with apalike.sty
 % har,%: Harvard system with harvard.sty
 % ast,%: Astronomy system with astron.sty
 % cay,%: Chicago system with chicago.sty
@@ -171,8 +171,8 @@ End of customized bst file
 %------\ans=3(==mct-3)-------
 %>>MAX AUTHORS BEFORE ET AL: (if regular cite not selected)
 %<<MAX AUTHORS WITHOUT ET AL: (if regular cite not selected)
-  mct-x2,%: Two authors without truncating 
-% mct-x3,%: Three authors without truncating
+% mct-x2,%: Two authors without truncating 
+  mct-x3,%: Three authors without truncating
 % mct-x4,%: Four authors without truncating
 % mct-x5,%: Five authors without truncating
 % mct-x6,%: Six authors without truncating
@@ -258,8 +258,8 @@ End of customized bst file
 %>>REVERSED DATE (if including month)
 %>>DATE FORMAT (if non author-year citations)
 %<<DATE FORMAT (if author-year citations)
-%   %: (def) Year plain without any brackets
-  yr-par,%: Year in parentheses as (1993)
+    %: (def) Year plain without any brackets
+%  yr-par,%: Year in parentheses as (1993)
 % yr-brk,%: Year in brackets as [1993]
 % yr-col,%: Year preceded by colon as `: 1993'
 % yr-per,%: Year preceded by period as `. 1993'
@@ -278,10 +278,10 @@ End of customized bst file
 %>>REVERSED DATE (if including month)
 %>>DATE FORMAT (if author-year citations)
 %<<DATE PUNCTUATION (if date not at end)
-%   %: (def) Date with standard block punctuation (comma or period)
+    %: (def) Date with standard block punctuation (comma or period)
 % yrp-col,%: Colon after date as 1994:
 % yrp-semi,%: Semi-colon after date as 1994;
-  yrp-per,%: Period after date even when blocks use commas
+% yrp-per,%: Period after date even when blocks use commas
 % yrp-x,%: No punct. after date 
 %------\ans=p(==yrp-per)-------
 %<<BLANK AFTER DATE:
@@ -536,8 +536,8 @@ End of customized bst file
 %------\ans=*(==)-------
 %>>PUNCTUATION BEFORE NOTES (if not using \newblock)
 %<<PUNCTUATION AFTER AUTHORS:
-    %: (def) Author block normal with regular block punctuation
-% au-col,%: Author block with colon 
+%   %: (def) Author block normal with regular block punctuation
+  au-col,%: Author block with colon 
 %------\ans=*(==)-------
 %>>PUNCTUATION AFTER AUTHORS:
 %<<PUNCTUATION AFTER `IN':
@@ -627,8 +627,8 @@ End of customized bst file
 %------\ans=*(==)-------
 %>>AMPERSAND:
 %<<COMMA BEFORE `AND':
-    %: (def) Comma before `and' as `Tom, Dick, and Harry'
-% and-xcom,%: No comma before `and' as `Tom, Dick and Harry'
+%   %: (def) Comma before `and' as `Tom, Dick, and Harry'
+  and-xcom,%: No comma before `and' as `Tom, Dick and Harry'
 % and-com,%: Comma even with 2 authors as `Tom, and Harry'
 %------\ans=*(==)-------
 %>>COMMA BEFORE `AND':

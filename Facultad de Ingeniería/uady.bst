@@ -4,9 +4,9 @@
 %%
 %% The original source files were:
 %%
-%% merlin.mbs  (with options: `head,exlang,ay,alk,lang,xintls,nm-rvv,nmlm,x3,m3,mcite,mct-3,mct-x2,keyxyr,dt-beg,yr-par,yrp-per,volp-com,num-xser,bkpg-x,isbn,issn,doi,edpar,blk-tit,spanish,ppx,ed,xedn,xand,etal-it,nfss,,{}')
-%% spanish.mbs  (with options: `exlang,ay,alk,lang,xintls,nm-rvv,nmlm,x3,m3,mcite,mct-3,mct-x2,keyxyr,dt-beg,yr-par,yrp-per,volp-com,num-xser,bkpg-x,isbn,issn,doi,edpar,blk-tit,spanish,ppx,ed,xedn,xand,etal-it,nfss,,{}')
-%% merlin.mbs  (with options: `tail,exlang,ay,alk,lang,xintls,nm-rvv,nmlm,x3,m3,mcite,mct-3,mct-x2,keyxyr,dt-beg,yr-par,yrp-per,volp-com,num-xser,bkpg-x,isbn,issn,doi,edpar,blk-tit,spanish,ppx,ed,xedn,xand,etal-it,nfss,,{}')
+%% merlin.mbs  (with options: `head,exlang,ay,lang,xintls,nm-rvv,nmlm,x3,m3,mcite,mct-3,mct-x3,keyxyr,dt-beg,volp-com,num-xser,bkpg-x,isbn,issn,doi,edpar,blk-tit,au-col,spanish,ppx,ed,xedn,and-xcom,xand,etal-it,nfss,,{}')
+%% spanish.mbs  (with options: `exlang,ay,lang,xintls,nm-rvv,nmlm,x3,m3,mcite,mct-3,mct-x3,keyxyr,dt-beg,volp-com,num-xser,bkpg-x,isbn,issn,doi,edpar,blk-tit,au-col,spanish,ppx,ed,xedn,and-xcom,xand,etal-it,nfss,,{}')
+%% merlin.mbs  (with options: `tail,exlang,ay,lang,xintls,nm-rvv,nmlm,x3,m3,mcite,mct-3,mct-x3,keyxyr,dt-beg,volp-com,num-xser,bkpg-x,isbn,issn,doi,edpar,blk-tit,au-col,spanish,ppx,ed,xedn,and-xcom,xand,etal-it,nfss,,{}')
 %% ----------------------------------------
 %% *** UADY STYLE ***
 %% 
@@ -30,9 +30,23 @@
  % This is an author-year citation style bibliography. As such, it is
  % non-standard LaTeX, and requires a special package file to function properly.
  % Such a package is    natbib.sty   by Patrick W. Daly
- % or:                  apalike.sty  by Oren Patashnik
  % The form of the \bibitem entries is
- %   \bibitem[Jones et al., 1990]{key}...
+ %   \bibitem[Jones et al.(1990)]{key}...
+ % The essential feature is that the label (the part in brackets) consists
+ % of the author names, as they should appear in the citation, with the year
+ % in parentheses following. There must be no space before the opening
+ % parenthesis!
+ % In natbib.sty, it is possible to define the type of enclosures that is
+ % really wanted (brackets or parentheses), but in either case, there must
+ % be parentheses in the label.
+ % The \cite command functions as follows:
+ %   \citet{key} ==>>                Jones et al. (1990)
+ %   \citep{key} ==>>                (Jones et al., 1990)
+ %   \citep[chap. 2]{key} ==>>       (Jones et al., 1990, chap. 2)
+ %   \citep[e.g.][]{key} ==>>        (e.g. Jones et al., 1990)
+ %   \citep[e.g.][p. 32]{key} ==>>   (e.g. Jones et al., 1990, p. 32)
+ %   \citeauthor{key} ==>>           Jones et al.
+ %   \citeyear{key} ==>>             1990
  %---------------------------------------------------------------------
 
 ENTRY
@@ -133,9 +147,16 @@ FUNCTION {add.blank}
 {  " " * before.all 'output.state :=
 }
 
+FUNCTION {add.colon}
+{ duplicate$ empty$
+    'skip$
+    { ":" * add.blank }
+  if$
+}
+
 FUNCTION {date.block}
 {
-  new.sentence
+  skip$
 }
 
 FUNCTION {not}
@@ -538,7 +559,7 @@ FUNCTION {output.bibitem}
 { newline$
   "\bibitem[" write$
   label write$
-  "]{" write$
+  ")]{" write$
   cite$ write$
   "}" write$
   newline$
@@ -585,8 +606,6 @@ FUNCTION {format.date}
     'skip$
   if$
   extra.label *
-  before.all 'output.state :=
-  " (" swap$ * ")" *
 }
 FUNCTION {format.btitle}
 { title "title" bibinfo.check
@@ -847,6 +866,7 @@ FUNCTION {article}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title "title" output.check
@@ -873,8 +893,10 @@ FUNCTION {book}
   author empty$
     { format.editors "author and editor" output.check
       editor format.key output
+      add.colon
     }
     { format.authors output.nonnull
+      add.colon
       crossref missing$
         { "author and editor" editor either.or.check }
         'skip$
@@ -905,6 +927,7 @@ FUNCTION {booklet}
 { output.bibitem
   format.authors output
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title "title" output.check
@@ -922,8 +945,10 @@ FUNCTION {inbook}
   author empty$
     { format.editors "author and editor" output.check
       editor format.key output
+      add.colon
     }
     { format.authors output.nonnull
+      add.colon
       crossref missing$
         { "author and editor" editor either.or.check }
         'skip$
@@ -961,6 +986,7 @@ FUNCTION {incollection}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title "title" output.check
@@ -986,6 +1012,7 @@ FUNCTION {inproceedings}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title "title" output.check
@@ -1017,6 +1044,7 @@ FUNCTION {manual}
 { output.bibitem
   format.authors output
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.btitle "title" output.check
@@ -1033,6 +1061,7 @@ FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.btitle
@@ -1050,6 +1079,7 @@ FUNCTION {misc}
 { output.bibitem
   format.authors output
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title output
@@ -1063,6 +1093,7 @@ FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.btitle
@@ -1080,6 +1111,7 @@ FUNCTION {proceedings}
 { output.bibitem
   format.editors output
   editor format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.btitle "title" output.check
@@ -1102,6 +1134,7 @@ FUNCTION {techreport}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title
@@ -1119,6 +1152,7 @@ FUNCTION {unpublished}
 { output.bibitem
   format.authors "author" output.check
   author format.key output
+  add.colon
   format.date "year" output.check
   date.block
   format.title "title" output.check
@@ -1155,7 +1189,7 @@ FUNCTION {format.lab.names}
       nameptr #1 >
         {
           nameptr #4 =
-          numnames #2 > and
+          numnames #3 > and
             { "others" 't :=
               #1 'namesleft := }
             'skip$
@@ -1172,10 +1206,6 @@ FUNCTION {format.lab.names}
                   " " * bbl.etal emphasize *
                 }
                 {
-                  numnames #2 >
-                    { "," * }
-                    'skip$
-                  if$
                   bbl.and
                   space.word * t *
                 }
@@ -1245,7 +1275,7 @@ FUNCTION {calc.short.authors}
 FUNCTION {calc.label}
 { calc.short.authors
   short.list
-  ", "
+  "("
   *
   year duplicate$ empty$
   short.list key field.or.null = or
